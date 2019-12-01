@@ -5,4 +5,6 @@ This project tries to generate dialogue utterances with an Encoder-Decoder built
 
 #### The dataset
 
-The dataset used to train 
+The dataset used for the project can be downloaded [here](http://opus.nlpl.eu/download.php?f=OpenSubtitles/v2018/mono/OpenSubtitles.raw.en.gz), and it contains 140 million utterances approximately. More dialogue datasets can be found in [this survey](https://breakend.github.io/DialogDatasets/).
+
+The dataset ha
