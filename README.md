@@ -52,3 +52,6 @@ Where the *context* are the previous dialogue sentences to the *response*. It is
 * It also manages the dataset split. We created just one file with all the dialogues.
 
 We have done some small modifications to the origial script, and this can be found in the respsitory (create_data.py)
+
+Although we have transformed the whole dataset we end up using just a small part of it.
+
