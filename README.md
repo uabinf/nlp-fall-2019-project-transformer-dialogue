@@ -9,7 +9,8 @@ The dataset used for the project can be downloaded [here](http://opus.nlpl.eu/do
 
 The opensubtitles dataset is pretty dirty, with some metadata of the movies, comments not being part of the dialogues, descriptions, ...
 
-We have used some [scripts] from Poly AI to clean the dataset. The script generates an output containing each of the utterances shown below:
+We have used some [scripts] from Poly AI to clean and format the dataset. The script generates an output containing each of the utterances as shown below:
+
 
 ```
 [Context]:
@@ -43,3 +44,11 @@ Other features:
 	[file_id]:
 		lines-emk
 ```
+
+Where the *context* are the previous dialogue sentences to the *response*. It is highly configurable and in our case we have generated it as :
+
+* Just one context sentence. We just use the previous sentence and there is a huge performance gain when creating the files. 
+* The script can generate the output as serialized Tensorflow format or JSON. We have created JSON outputs. 
+* It also manages the dataset split. We created just one file with all the dialogues.
+
+We have done some small modifications to the origial script, and this can be found in the respsitory (create_data.py)
