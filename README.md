@@ -55,3 +55,6 @@ We have done some small modifications to the origial script, and this can be fou
 
 Although we have transformed the whole dataset we end up using just a small part of it.
 
+#### The model
+
+The model used is from the [tensorflow implementation](https://www.tensorflow.org/tutorials/text/transformer) of the translator having cleaned it and changed it to a script mode.
