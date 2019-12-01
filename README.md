@@ -58,3 +58,8 @@ Although we have transformed the whole dataset we end up using just a small part
 #### The model
 
 The implementation of the model used (found at [model.py](https://github.com/uabinf/nlp-fall-2019-project-transformer-dialogue/blob/master/model.py)) is from the [tensorflow implementation](https://www.tensorflow.org/tutorials/text/transformer) of the translator having cleaned it and changed it to a script mode.
+
+#### Pending
+* Small explanaiton of the model
+* The results
+* The issues
