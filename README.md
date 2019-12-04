@@ -9,7 +9,7 @@ The dataset used for the project can be downloaded [here](http://opus.nlpl.eu/do
 
 The opensubtitles dataset is pretty dirty, with some metadata of the movies, comments not being part of the dialogues, descriptions, ...
 
-We have used some [scripts] from Poly AI to clean and format the dataset. The script generates an output containing each of the utterances as shown below:
+We have used some [scripts](https://github.com/PolyAI-LDN/conversational-datasets/tree/master/opensubtitles) from Poly AI to clean and format the dataset. The script generates an output containing each of the utterances as shown below:
 
 
 ```
