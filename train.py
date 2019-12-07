@@ -1,6 +1,8 @@
 from model import *
 from tokenizer import *
 
+import time
+
 num_layers = 4
 d_model = 128
 dff = 512
@@ -91,94 +93,27 @@ def train_step(inp, tar):
     train_accuracy(tar_real, predictions)
 
 
-# for epoch in range(EPOCHS):
-#     start = time.time()
-#
-#     train_loss.reset_states()
-#     train_accuracy.reset_states()
-#
-#     # inp -> portuguese, tar -> english
-#     for (batch, (inp, tar)) in enumerate(train_dataset):
-#         train_step(inp, tar)
-#
-#         if batch % 50 == 0:
-#             print('Epoch {} Batch {} Loss {:.4f} Accuracy {:.4f}'.format(
-#                 epoch + 1, batch, train_loss.result(), train_accuracy.result()))
-#
-#     if (epoch + 1) % 5 == 0:
-#         ckpt_save_path = ckpt_manager.save()
-#         print('Saving checkpoint for epoch {} at {}'.format(epoch + 1,
-#                                                             ckpt_save_path))
-#
-#     print('Epoch {} Loss {:.4f} Accuracy {:.4f}'.format(epoch + 1,
-#                                                         train_loss.result(),
-#                                                         train_accuracy.result()))
-#
-#     print('Time taken for 1 epoch: {} secs\n'.format(time.time() - start))
+for epoch in range(EPOCHS):
+    start = time.time()
 
-MAX_LENGTH = 40
+    train_loss.reset_states()
+    train_accuracy.reset_states()
 
-def evaluate(inp_sentence):
-    start_token = [tokenizer_context.vocab_size]
-    end_token = [tokenizer_context.vocab_size + 1]
+    # inp -> portuguese, tar -> english
+    for (batch, (inp, tar)) in enumerate(train_dataset):
+        train_step(inp, tar)
 
-    # inp sentence is portuguese, hence adding the start and end token
-    inp_sentence = start_token + tokenizer_context.encode(inp_sentence) + end_token
-    encoder_input = tf.expand_dims(inp_sentence, 0)
+        if batch % 50 == 0:
+            print('Epoch {} Batch {} Loss {:.4f} Accuracy {:.4f}'.format(
+                epoch + 1, batch, train_loss.result(), train_accuracy.result()))
 
-    # as the target is english, the first word to the transformer should be the
-    # english start token.
-    decoder_input = [tokenizer_response.vocab_size]
-    output = tf.expand_dims(decoder_input, 0)
+    if (epoch + 1) % 5 == 0:
+        ckpt_save_path = ckpt_manager.save()
+        print('Saving checkpoint for epoch {} at {}'.format(epoch + 1,
+                                                            ckpt_save_path))
 
-    for i in range(MAX_LENGTH):
-        enc_padding_mask, combined_mask, dec_padding_mask = create_masks(
-            encoder_input, output)
+    print('Epoch {} Loss {:.4f} Accuracy {:.4f}'.format(epoch + 1,
+                                                        train_loss.result(),
+                                                        train_accuracy.result()))
 
-        # predictions.shape == (batch_size, seq_len, vocab_size)
-        predictions, attention_weights = transformer(encoder_input,
-                                                     output,
-                                                     False,
-                                                     enc_padding_mask,
-                                                     combined_mask,
-                                                     dec_padding_mask)
-
-        # select the last word from the seq_len dimension
-        predictions = predictions[:, -1:, :]  # (batch_size, 1, vocab_size)
-
-        predicted_id = tf.cast(tf.argmax(predictions, axis=-1), tf.int32)
-
-        # return the result if the predicted_id is equal to the end token
-        if predicted_id == tokenizer_response.vocab_size + 1:
-            return tf.squeeze(output, axis=0), attention_weights
-
-        # concatentate the predicted_id to the output which is given to the decoder
-        # as its input.
-        output = tf.concat([output, predicted_id], axis=-1)
-
-    return tf.squeeze(output, axis=0), attention_weights
-
-
-def translate(sentence, plot=''):
-    result, attention_weights = evaluate(sentence)
-
-    predicted_sentence = tokenizer_response.decode([i for i in result
-                                              if i < tokenizer_response.vocab_size])
-
-    print('Input: {}'.format(sentence))
-    print('Predicted translation: {}'.format(predicted_sentence))
-
-translate("Hello I am John.")
-translate("Hello I am John")
-translate("Who are you?")
-
-sample_string = 'Transformer is awesome.'
-
-tokenized_string = tokenizer_context.encode(sample_string)
-print ('Tokenized string is {}'.format(tokenized_string))
-
-original_string = tokenizer_context.decode(tokenized_string)
-print ('The original string: {}'.format(original_string))
-
-for ts in tokenized_string:
-  print ('{} ----> {}'.format(ts, tokenizer_context.decode([ts])))
+    print('Time taken for 1 epoch: {} secs\n'.format(time.time() - start))

@@ -17,14 +17,12 @@ def datsets():
 
         val_examples_list = []
 
-        path_to_json = 'json/'
+        path_to_json = 'json_small/'
         json_files = [pos_json for pos_json in os.listdir(path_to_json) if pos_json.endswith('.json')]
 
         for index, js in enumerate(json_files):
             with open(os.path.join(path_to_json, js)) as json_file:
-                #json_text = json.load(json_file)
 
-        #with open('train-00602-of-01000.json') as json_file:
                 lines = json_file.readlines()
 
                 for line in lines:
@@ -35,11 +33,9 @@ def datsets():
 
         train_examples = tf.data.Dataset.from_tensor_slices((train_context, train_response))
 
-        with open('test-00400-of-01000.json') as json_file:
+        with open(os.path.join(path_to_json, js)) as json_file:
             lines = json_file.readlines()
-            val_examples = []
             for line in lines:
-                # val_examples.append(json.loads(line))
                 json_line = json.loads(line)
                 val_examples_list.append(json_line)
                 val_context.append(json_line['context'])
